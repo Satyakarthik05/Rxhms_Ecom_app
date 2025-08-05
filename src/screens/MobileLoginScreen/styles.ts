@@ -18,40 +18,52 @@ export const styles = StyleSheet.create({
     marginBottom: 50,
     textAlign: 'left',
   },
-  formContainer: {
-    flex: 1,
+  mobileLoginContainer: {
+    width: '100%',
+    marginBottom: 32,
   },
-  inputContainer: {
-    marginBottom: 20,
-    position: 'relative',
+  phoneLabel: {
+    fontSize: 14,
+    color: '#666666',
+    marginBottom: 8,
   },
-  input: {
+  phoneInputContainer: {
+    flexDirection: 'row',
     backgroundColor: '#f5f5f5',
     borderWidth: 1,
     borderColor: '#e0e0e0',
     borderRadius: 8,
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  countryCode: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 12,
+    paddingVertical: 15,
+    backgroundColor: '#ffffff',
+    borderRightWidth: 1,
+    borderRightColor: '#e0e0e0',
+  },
+  flagText: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  countryCodeText: {
+    fontSize: 16,
+    color: '#000000',
+    fontWeight: '500',
+  },
+  phoneInput: {
+    flex: 1,
     paddingVertical: 15,
     paddingHorizontal: 16,
     fontSize: 16,
     color: '#000000',
   },
-  passwordInput: {
-    paddingRight: 50,
-  },
-  eyeIcon: {
-    position: 'absolute',
-    right: 15,
-    top: 15,
-    padding: 5,
-  },
-  eyeText: {
-    fontSize: 20,
-    color: '#666',
-  },
   linksContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 40,
     marginTop: 10,
   },
   linkText: {
@@ -63,36 +75,21 @@ export const styles = StyleSheet.create({
     paddingVertical: 18,
     borderRadius: 8,
     alignItems: 'center',
-    marginBottom: 25,
+    marginTop: 30,
   },
   loginButtonText: {
     color: '#ffffff',
     fontSize: 16,
     fontWeight: '600',
   },
-  orText: {
-    textAlign: 'center',
-    color: '#666666',
-    fontSize: 14,
-    marginBottom: 25,
-  },
-  otpButton: {
-    backgroundColor: '#000000',
-    paddingVertical: 18,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginBottom: 40,
-  },
-  otpButtonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: '600',
-  },
   signUpContainer: {
+    position: 'absolute',
+    bottom: 40,
+    left: 0,
+    right: 0,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 40,
   },
   signUpText: {
     fontSize: 14,
