@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import { CountryPicker } from 'react-native-country-codes-picker';
-import {styles} from './styles';
+import { styles } from './styles';
 
 type MobileLoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'MobileLogin'>;
 
@@ -29,6 +29,10 @@ const MobileLoginScreen: React.FC = () => {
   const handleLoginWithEmail = () => {
     navigation.navigate('Login');
   };
+  const handleSignup = () => {
+    navigation.navigate('Signup');
+    console.log('Sign up pressed');
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,7 +75,7 @@ const MobileLoginScreen: React.FC = () => {
 
         <View style={styles.signUpContainer}>
           <Text style={styles.signUpText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => console.log('Sign up')}>
+          <TouchableOpacity onPress={handleSignup}>
             <Text style={styles.signUpLink}>Sign up</Text>
           </TouchableOpacity>
         </View>

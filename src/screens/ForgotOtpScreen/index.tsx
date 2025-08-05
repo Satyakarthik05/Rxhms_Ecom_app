@@ -7,19 +7,19 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
-import { styles } from './styles'; // Assuming styles are defined in styles.ts
+import { styles } from '../OtpVerifyScreen/styles'; // Assuming styles are defined in styles.ts
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import Feather from 'react-native-vector-icons/Feather';
 
-type OtpVerifyScreenNavigationProp = NativeStackNavigationProp<
+type ForgotOtpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
-  'OtpVerifyScreen'
+  'ForgotOtpScreen'
 >;
 
-const OtpVerifyScreen: React.FC = () => {
-  const navigation = useNavigation<OtpVerifyScreenNavigationProp>();
+const ForgotOtpScreen: React.FC = () => {
+  const navigation = useNavigation<ForgotOtpScreenNavigationProp>();
   const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(20);
   const [canResend, setCanResend] = useState(false);
@@ -60,7 +60,7 @@ const OtpVerifyScreen: React.FC = () => {
     const otpString = otp.join('');
     if (otpString.length === 4) {
       console.log('OTP Verified:', otpString);
-      navigation.navigate('Home'); 
+      navigation.navigate('ResetPasswordScreen'); 
       Alert.alert('Success', 'OTP Verified Successfully');
     } else {
       Alert.alert('Error', 'Please enter complete OTP');
@@ -99,11 +99,11 @@ const OtpVerifyScreen: React.FC = () => {
 
         {/* Text Container */}
         <View style={styles.textContainer}>
-          <Text style={styles.title}>Verify your account</Text>
+          <Text style={styles.title}>Please check your Email</Text>
           <View style={styles.subtitleContainer}>
             <Text style={styles.subtitle}>
-              We've sent a code to{'\n'}mobile number{' '}
-              <Text style={styles.phoneNumber}>+91 96435 64721</Text>
+              We've sent a code to{'\n'}email Id{' '}
+              <Text style={styles.phoneNumber}>harikachittiprolu@gmail.com</Text>
             </Text>
             <TouchableOpacity style={styles.editButton}>
               <Feather name="edit-2" size={16} color="#666" />
@@ -156,4 +156,4 @@ const OtpVerifyScreen: React.FC = () => {
 
 
 
-export default OtpVerifyScreen;
+export default ForgotOtpScreen;

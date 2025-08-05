@@ -2,8 +2,10 @@
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
-
+  Signup: undefined
   OtpVerifyScreen: undefined;
   MobileLogin: undefined
   ForgotPasswordScreen: undefined;
+  ForgotOtpScreen: undefined;
+  ResetPasswordScreen: undefined;
 };

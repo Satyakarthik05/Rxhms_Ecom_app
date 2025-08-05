@@ -6,6 +6,10 @@ import { RootStackParamList } from '../types/types';
 import HomeScreen from '../screens/HomeScreen';
 import OtpVerifyScreen from '../screens/OtpVerifyScreen';
 import MobileLoginScreen from '../screens/MobileLoginScreen';
+import SignupScreen from '../screens/RegisterScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import ForgotOtpScreen from '../screens/ForgotOtpScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 
 
 
@@ -38,6 +42,27 @@ const StackNavigator = () => {
         name="MobileLogin" 
         component={MobileLoginScreen}
         options={{ title: 'Login' }}
+      />
+       <Stack.Screen 
+        name="Signup" 
+        component={SignupScreen}
+        options={{ title: 'Sign up' }}
+      />
+        <Stack.Screen 
+        name="ForgotPasswordScreen" 
+        component={ForgotPasswordScreen}
+        options={{ title: 'Forgot Password' }}
+      />
+
+ <Stack.Screen 
+        name="ForgotOtpScreen" 
+        component={ForgotOtpScreen}
+        options={{ title: 'Forgot Otp' }}
+      />
+       <Stack.Screen 
+        name="ResetPasswordScreen" 
+        component={ResetPasswordScreen}
+        options={{ title: 'Forgot Otp' }}
       />
 
     </Stack.Navigator>

@@ -37,10 +37,12 @@ const LoginScreen: React.FC = () => {
   };
 
   const handleForgotPassword = () => {
+    navigation.navigate('ForgotPasswordScreen');
     console.log('Forgot password pressed');
   };
 
   const handleSignUp = () => {
+    navigation.navigate('Signup');
     console.log('Sign up pressed');
   };
 
