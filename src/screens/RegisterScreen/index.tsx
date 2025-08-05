@@ -12,50 +12,95 @@ import {
 } from 'react-native';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {styles} from'./styles';
+import {styles as MobileLoginStyles} from '../MobileLoginScreen/styles'
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import Feather from 'react-native-vector-icons/Feather';
+import { CustomerRegistration } from '../../models/CustomerRegistration';
+import { RegisterUser } from '../../constants/constants';
+import { usePostByBody } from '../../customHooks/usePostByPath';
+import { GenderType } from '../../models/enums';
+import { useRoute, RouteProp } from '@react-navigation/native';
+
+type SignupScreenRouteProp = RouteProp<RootStackParamList, 'Signup'>;
 
 type SignupScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Signup'>;
 
 const SignupScreen: React.FC = () => {
   const navigation = useNavigation<SignupScreenNavigationProp>();
-  const [name, setName] = useState('');
+   const route = useRoute<SignupScreenRouteProp>();
+  const { phoneNumber: initialPhoneNumber } = route.params || {};
+  const [phoneNumber, setPhoneNumber] = useState(initialPhoneNumber || '');
+  const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
+  const [nickName, setNickName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+    const [showCountryPicker, setShowCountryPicker] = useState(false);
+    const [countryCode, setCountryCode] = useState('+91');
+    const [flag, setFlag] = useState('🇮🇳');
+    const [callingCode, setCallingCode] = useState('91');
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleSignup = () => {
-    if (!name || !email || !gender || !password || !confirmPassword) {
-      Alert.alert('Error', 'Please fill all fields');
-      return;
-    }
 
-    if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
-      return;
-    }
+   const {
+      data: loginResponse,
+      loading: loadingLoginWithMobile,
+      error: errorLoginWithMobile,
+      executePostByPath
+    } = usePostByBody();
 
-    if (password.length < 8) {
-      Alert.alert('Error', 'Password must be at least 8 characters');
-      return;
-    }
+  const handleSignup = async () => {
+    // if (!firstName || !lastName || !email || !gender || !password || !confirmPassword) {
+    //   Alert.alert('Error', 'Please fill all fields');
+    //   return;
+    // }
 
-    console.log('Signup data:', {
-      name,
-      email,
-      gender,
-      dateOfBirth: dateOfBirth.toLocaleDateString(),
-      password,
-    });
+    // if (password !== confirmPassword) {
+    //   Alert.alert('Error', 'Passwords do not match');
+    //   return;
+    // }
 
-    Alert.alert('Success', 'Account created successfully!');
+    // if (password.length < 8) {
+    //   Alert.alert('Error', 'Password must be at least 8 characters');
+    //   return;
+    // }
+
+    const registerRequest: CustomerRegistration = {
+        firstName,
+        middleName: '',
+        lastName,
+        username: '',
+        displayName: nickName,
+        gender: gender.toUpperCase() as GenderType,
+         mobileNumber: phoneNumber,
+         emailId: email,
+         password: confirmPassword,
+        dob: dateOfBirth.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+
+      };
+      console.log('Customer registration request:', registerRequest);
+      try {
+            const response = await executePostByPath(RegisterUser, registerRequest);
+            console.log('Customer registration response:', response);
+          //  if (response?.isCustomerExist === false) {
+          //   navigation.navigate('Signup', { phoneNumber }); // pass number if needed in Signup
+          // } else {
+            navigation.navigate('Home');
+          // }
+      
+          Alert.alert('Success', 'OTP Verified Successfully');
+          } catch (error) {
+            console.error('OTP verification failed:', error);
+            Alert.alert('Error', 'OTP verification failed. Please try again.');
+          }
   };
 
   const handleBack = () => {
@@ -92,29 +137,59 @@ const SignupScreen: React.FC = () => {
       <View style={styles.formContainer}>
         {/* Name Field */}
         <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Name</Text>
+          <Text style={styles.label}>First Name</Text>
           <TextInput
             style={styles.input}
-            placeholder="Muthayla Raj Chinni"
-            value={name}
-            onChangeText={setName}
+            placeholder="Enter your First Name"
+            value={firstName}
+            onChangeText={setFirstName}
+            placeholderTextColor="#999"
+          />
+        </View>
+           <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Last Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your Last Name"
+            value={lastName}
+            onChangeText={setLastName}
             placeholderTextColor="#999"
           />
         </View>
 
-        {/* Email Field */}
-        <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Email</Text>
+             <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Nick Name</Text>
           <TextInput
             style={styles.input}
-            placeholder="mrchinni@chasoftware.com"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
+            placeholder="Enter your Nick Name"
+            value={nickName}
+            onChangeText={setNickName}
             placeholderTextColor="#999"
           />
         </View>
+
+         <View style={MobileLoginStyles.phoneInputContainer}> 
+                    <TouchableOpacity
+                      style={MobileLoginStyles.countryCode}
+                      onPress={() => setShowCountryPicker(true)}
+                    >
+                      <Text style={MobileLoginStyles.flagText}>{flag}</Text>
+                      <Text style={MobileLoginStyles.countryCodeText}>{countryCode}</Text>
+                    </TouchableOpacity>
+        
+                    <TextInput
+                      style={MobileLoginStyles.phoneInput}
+                      placeholder="Enter your phone number"
+                      value={phoneNumber}
+                      onChangeText={setPhoneNumber}
+                      keyboardType="phone-pad"
+                      // maxLength={10}
+                      placeholderTextColor="#999"
+                    />
+                  </View>
+
+        {/* Email Field */}
+       
 
         {/* Gender Field */}
         <View style={styles.fieldContainer}>
@@ -165,7 +240,7 @@ const SignupScreen: React.FC = () => {
         </View>
 
         {/* Create Password Field */}
-        <View style={styles.fieldContainer}>
+        {/* <View style={styles.fieldContainer}>
           <Text style={styles.label}>Create a password</Text>
           <View style={styles.passwordContainer}>
             <TextInput
@@ -183,11 +258,25 @@ const SignupScreen: React.FC = () => {
               <Feather name={showPassword ? 'eye-off' : 'eye'} size={20} color="#666" />
             </TouchableOpacity>
           </View>
+        </View> */}
+
+
+         <View style={styles.fieldContainer}>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="mrchinni@chasoftware.com"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            placeholderTextColor="#999"
+          />
         </View>
 
         {/* Confirm Password Field */}
         <View style={styles.fieldContainer}>
-          <Text style={styles.label}>Confirm password</Text>
+          <Text style={styles.label}>Password</Text>
           <View style={styles.passwordContainer}>
             <TextInput
               style={styles.passwordInput}
@@ -213,15 +302,17 @@ const SignupScreen: React.FC = () => {
       </View>
 
       {/* DateTime Picker Modal */}
-      {showDatePicker && (
-        <DateTimePicker
-          value={dateOfBirth}
-          mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-          maximumDate={new Date()}
-          onChange={onChangeDate}
-        />
-      )}
+     <DateTimePicker
+  isVisible={showDatePicker}
+  mode="date"
+  onConfirm={(date) => {
+    setDateOfBirth(date);
+    setShowDatePicker(false);
+  }}
+  onCancel={() => setShowDatePicker(false)}
+  maximumDate={new Date()}
+/>
+
      
     </SafeAreaView>
      </ScrollView>

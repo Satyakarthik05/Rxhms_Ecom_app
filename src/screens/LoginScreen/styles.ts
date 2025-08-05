@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Colors } from "../../constants/colors";
 
 export const styles = StyleSheet.create({
   container: {
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '600',
-    color: '#000000',
+    color: Colors.PRIMARY,
     marginBottom: 50,
     textAlign: 'left',
   },
@@ -25,15 +26,21 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
     position: 'relative',
   },
+  label: {
+  fontSize: 15,
+  fontWeight: '600',
+  color: '#333',
+  marginBottom: 8,
+},
   input: {
     backgroundColor: '#f5f5f5',
     borderWidth: 1,
-    borderColor: '#e0e0e0',
+    borderColor: '#006F8580',
     borderRadius: 8,
     paddingVertical: 15,
     paddingHorizontal: 16,
     fontSize: 16,
-    color: '#000000',
+    color: '#333333',
   },
   passwordInput: {
     paddingRight: 50,
@@ -41,7 +48,7 @@ export const styles = StyleSheet.create({
   eyeIcon: {
     position: 'absolute',
     right: 15,
-    top: 15,
+    top: 35,
     padding: 5,
   },
   eyeText: {
@@ -56,10 +63,15 @@ export const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 14,
-    color: '#666666',
+    color: Colors.PRIMARY,
+  },
+  forgotlinkText: {
+    fontSize: 14,
+    // color: Colors.RED,
+     color: '#FF4234'
   },
   loginButton: {
-    backgroundColor: '#000000',
+    backgroundColor: Colors.PRIMARY,
     paddingVertical: 18,
     borderRadius: 8,
     alignItems: 'center',
@@ -77,7 +89,7 @@ export const styles = StyleSheet.create({
     marginBottom: 25,
   },
   otpButton: {
-    backgroundColor: '#000000',
+    backgroundColor: Colors.PRIMARY,
     paddingVertical: 18,
     borderRadius: 8,
     alignItems: 'center',
@@ -100,7 +112,7 @@ export const styles = StyleSheet.create({
   },
   signUpLink: {
     fontSize: 14,
-    color: '#000000',
+    color: Colors.PRIMARY,
     fontWeight: '600',
     textDecorationLine: 'underline',
   },

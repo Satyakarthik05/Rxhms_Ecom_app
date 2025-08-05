@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import {styles} from './styles'
+import { styles } from './styles'
 import Feather from 'react-native-vector-icons/Feather';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
+import { usePostByBody } from '../../customHooks/usePostByPath';
+import { LoginWithEmail } from '../../constants/constants';
 
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -21,13 +23,60 @@ const LoginScreen: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleLogin = () => {
-    navigation.navigate('OtpVerifyScreen'); 
-    console.log('Login pressed', { email, password });
-  };
+  const [error, setError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+
+
+  const { data: loginWithEmail, loading: loadingLoginWithEmail, error: errorLoginWithEmail, executePostByPath } = usePostByBody();
+
+
+
+  // const handleLogin = async () => {
+  //   navigation.navigate('OtpVerifyScreen');
+  //   console.log('Login pressed', { email, password });
+  // };
+
+
+  const handleLogin = async () => {
+    try {
+      if (!email.trim()) {
+        setEmailError('Please enter your email ID');
+        return;
+      }
+      if (!password.trim()) {
+        setPasswordError('Please enter your password');
+        return;
+      }
+
+      setEmail('');
+      setPassword('');
+
+
+      const LoginWithEmailRequest = {
+
+        emailId: email,
+        password: password,
+
+      };
+
+      console.log("Request payload for login with email:", LoginWithEmailRequest);
+
+      const response = await executePostByPath(LoginWithEmail, LoginWithEmailRequest);
+      if(response){
+       navigation.navigate('OtpVerifyScreen');
+      }
+
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Login failed. Please try again.");
+    }
+
+
+  }
 
   const handleOTPLogin = () => {
-  navigation.navigate('MobileLogin');
+    navigation.navigate('MobileLogin');
     console.log('OTP Login pressed');
   };
 
@@ -49,13 +98,14 @@ const LoginScreen: React.FC = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Log in</Text>
-        
+        <Text style={styles.title}>Login</Text>
+
         <View style={styles.formContainer}>
           <View style={styles.inputContainer}>
+            <Text style={styles.label}>Email ID</Text>
             <TextInput
               style={styles.input}
-              placeholder="Email or phone Number"
+              placeholder="Enter Email Id"
               value={email}
               onChangeText={setEmail}
               keyboardType="email-address"
@@ -66,9 +116,10 @@ const LoginScreen: React.FC = () => {
           </View>
 
           <View style={styles.inputContainer}>
+            <Text style={styles.label}>Password</Text>
             <TextInput
               style={[styles.input, styles.passwordInput]}
-              placeholder="Password"
+              placeholder="Enter Password"
               value={password}
               onChangeText={setPassword}
               secureTextEntry={!showPassword}
@@ -79,8 +130,7 @@ const LoginScreen: React.FC = () => {
               style={styles.eyeIcon}
               onPress={() => setShowPassword(!showPassword)}
             >
-              {/* <Text style={styles.eyeText}>{showPassword ? '🙈' : '👁️'}</Text> */}
-               <Feather name={showPassword ? 'eye-off' : 'eye'} size={22} color="#666" />
+              <Feather name={showPassword ? 'eye' : 'eye-off'} size={22} color="#666" />
             </TouchableOpacity>
           </View>
 
@@ -88,14 +138,14 @@ const LoginScreen: React.FC = () => {
             <TouchableOpacity onPress={handlePhoneLogin}>
               <Text style={styles.linkText}>Login with Phone Number</Text>
             </TouchableOpacity>
-            
+
             <TouchableOpacity onPress={handleForgotPassword}>
-              <Text style={styles.linkText}>Forgot password?</Text>
+              <Text style={styles.forgotlinkText}>Forgot password?</Text>
             </TouchableOpacity>
           </View>
 
           <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-            <Text style={styles.loginButtonText}>Log in</Text>
+            <Text style={styles.loginButtonText}>Login</Text>
           </TouchableOpacity>
 
           <Text style={styles.orText}>OR</Text>

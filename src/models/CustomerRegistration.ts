@@ -3,10 +3,10 @@ import { GenderType } from "./enums";
 export interface CustomerRegistration {
 	
 	firstName: string;
-	middleName: string;
+	middleName?: string;
 	lastName: string;
-	username: string;
-	dispalayName: string;
+	username?: string;
+	displayName: string;
 	gender: GenderType;
 	dob: string;
 	mobileNumber: string;

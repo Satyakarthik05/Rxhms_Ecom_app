@@ -7,16 +7,20 @@ import {
   SafeAreaView,
   Alert,
 } from 'react-native';
-import { styles } from './styles'; // Assuming styles are defined in styles.ts
+import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import Feather from 'react-native-vector-icons/Feather';
+import { usePostByBody } from '../../customHooks/usePostByPath';
+import { LoginWithMobile } from '../../constants/constants';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { getLocalData } from '../../utils/utils';
+import { LoginRequest } from '../../models/LoginRequest';
 
-type OtpVerifyScreenNavigationProp = NativeStackNavigationProp<
-  RootStackParamList,
-  'OtpVerifyScreen'
->;
+
+type OtpVerifyScreenRouteProp = RouteProp<RootStackParamList, 'OtpVerifyScreen'>;
+type OtpVerifyScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'OtpVerifyScreen'>;
 
 const OtpVerifyScreen: React.FC = () => {
   const navigation = useNavigation<OtpVerifyScreenNavigationProp>();
@@ -24,6 +28,17 @@ const OtpVerifyScreen: React.FC = () => {
   const [timer, setTimer] = useState(20);
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef<(TextInput | null)[]>([]);
+
+  const route = useRoute<OtpVerifyScreenRouteProp>();
+  const { phoneNumber } = route.params;
+
+
+  const {
+    data: loginResponse,
+    loading: loadingLoginWithMobile,
+    error: errorLoginWithMobile,
+    executePostByPath
+  } = usePostByBody();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,16 +71,42 @@ const OtpVerifyScreen: React.FC = () => {
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const otpString = otp.join('');
-    if (otpString.length === 4) {
-      console.log('OTP Verified:', otpString);
-      navigation.navigate('Home'); 
-      Alert.alert('Success', 'OTP Verified Successfully');
-    } else {
+    if (otpString.length !== 4) {
       Alert.alert('Error', 'Please enter complete OTP');
+      return;
+    }
+    const txnId = await getLocalData('txnId');
+    console.log('Transaction ID:', txnId);
+
+    const loginRequest: LoginRequest = {
+      username: undefined, // optional
+      emailId: undefined,  // optional
+      password: undefined, // optional
+      mobileNumber: phoneNumber,
+      txnId: txnId,
+      otp: otpString,
+    };
+
+    console.log('Verifying OTP with request:', loginRequest);
+
+    try {
+      const response = await executePostByPath(LoginWithMobile, loginRequest);
+      console.log('OTP verified response:', response);
+     if (response?.isCustomerExist === false) {
+      navigation.navigate('Signup', { phoneNumber }); // pass number if needed in Signup
+    } else {
+      navigation.navigate('Home');
+    }
+
+    Alert.alert('Success', 'OTP Verified Successfully');
+    } catch (error) {
+      console.error('OTP verification failed:', error);
+      Alert.alert('Error', 'OTP verification failed. Please try again.');
     }
   };
+
 
   const handleResendCode = () => {
     if (canResend) {
@@ -103,7 +144,7 @@ const OtpVerifyScreen: React.FC = () => {
           <View style={styles.subtitleContainer}>
             <Text style={styles.subtitle}>
               We've sent a code to{'\n'}mobile number{' '}
-              <Text style={styles.phoneNumber}>+91 96435 64721</Text>
+              <Text style={styles.phoneNumber}>{phoneNumber}</Text>
             </Text>
             <TouchableOpacity style={styles.editButton}>
               <Feather name="edit-2" size={16} color="#666" />

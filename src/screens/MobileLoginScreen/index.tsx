@@ -11,6 +11,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import { CountryPicker } from 'react-native-country-codes-picker';
 import { styles } from './styles';
+import { usePostByParams } from '../../customHooks/usePostByParams';
+import { GenerateOtpForLogin } from '../../constants/constants';
 
 type MobileLoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'MobileLogin'>;
 
@@ -20,11 +22,42 @@ const MobileLoginScreen: React.FC = () => {
   const [showCountryPicker, setShowCountryPicker] = useState(false);
   const [countryCode, setCountryCode] = useState('+91');
   const [flag, setFlag] = useState('🇮🇳');
+  const [callingCode, setCallingCode] = useState('91');
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = () => {
-    navigation.navigate('OtpVerifyScreen');
+
+    const { data, loading, error: apiError, executePost } = usePostByParams();
+
+
+  const handleLogin = async () => {
+     
+    if (!phoneNumber.trim()) {
+      setError("Mobile number is required");
+      return;
+    }
+
+    if (phoneNumber.length !== 10) {
+      setError("Please enter a valid 10-digit mobile number");
+      return;
+    }
+
+    const formattedNumber = `+${callingCode}-${phoneNumber}`;
+    console.log("Submitting mobile number:", formattedNumber);
+
+    try {
+   const response =   await executePost(GenerateOtpForLogin, { mobileNumber: formattedNumber });
+      console.log("OTP generation response:", response);
     console.log('Mobile Login pressed', { phoneNumber, countryCode });
+   
+      navigation.navigate('OtpVerifyScreen', {phoneNumber: formattedNumber})
+    
+    } catch (err) {
+      console.error("Login error:", err);
+      setError("Failed to send OTP. Please try again.");
+    }
   };
+   
+  
 
   const handleLoginWithEmail = () => {
     navigation.navigate('Login');
@@ -53,7 +86,7 @@ const MobileLoginScreen: React.FC = () => {
 
             <TextInput
               style={styles.phoneInput}
-              placeholder="98765 43210"
+              placeholder="Enter your phone number"
               value={phoneNumber}
               onChangeText={setPhoneNumber}
               keyboardType="phone-pad"
