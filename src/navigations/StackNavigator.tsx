@@ -10,6 +10,8 @@ import SignupScreen from '../screens/RegisterScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ForgotOtpScreen from '../screens/ForgotOtpScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import AddFamilyMember from '../screens/AddMemberScreen';
 
 
 
@@ -26,7 +28,9 @@ const StackNavigator = () => {
       <Stack.Screen 
         name="Login" 
         component={LoginScreen}
-        options={{ title: 'Login' }}
+        options={{ title: 'Login',
+           headerShown: false,
+         }}
       />
         <Stack.Screen 
         name="Home" 
@@ -63,6 +67,17 @@ const StackNavigator = () => {
         name="ResetPasswordScreen" 
         component={ResetPasswordScreen}
         options={{ title: 'Forgot Otp' }}
+      />
+         <Stack.Screen 
+        name="Profile" 
+        component={ProfileScreen}
+        options={{ title: 'Profile' }}
+      />
+
+      <Stack.Screen 
+        name="AddMemberScreen" 
+        component={AddFamilyMember}
+        options={{ title: 'Add Family Member' }}
       />
 
     </Stack.Navigator>

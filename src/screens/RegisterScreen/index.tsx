@@ -22,6 +22,7 @@ import { RegisterUser } from '../../constants/constants';
 import { usePostByBody } from '../../customHooks/usePostByPath';
 import { GenderType } from '../../models/enums';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import { formatDate } from '../../utils/utils';
 
 type SignupScreenRouteProp = RouteProp<RootStackParamList, 'Signup'>;
 
@@ -107,13 +108,6 @@ const SignupScreen: React.FC = () => {
     navigation.goBack();
   };
 
-  const formatDate = (date: Date) => {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = date.toLocaleDateString('en-US', { month: 'short' });
-    const year = date.getFullYear();
-    return `${day} ${month} ${year}`;
-  };
-
   // Date picker change handler
   const onChangeDate = (event: any, selectedDate?: Date) => {
     setShowDatePicker(Platform.OS === 'ios'); // iOS keeps the picker open until closed manually
@@ -169,6 +163,7 @@ const SignupScreen: React.FC = () => {
         </View>
 
          <View style={MobileLoginStyles.phoneInputContainer}> 
+           <Text style={styles.label}>Phone Number</Text>
                     <TouchableOpacity
                       style={MobileLoginStyles.countryCode}
                       onPress={() => setShowCountryPicker(true)}

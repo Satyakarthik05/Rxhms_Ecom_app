@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
 
 
@@ -76,3 +77,13 @@ export const clearSessionData = async (): Promise<void> => {
     console.error('Error clearing session data:', error); 
   }
 }
+
+
+ export const formatDate = (date: Date) => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = date.toLocaleDateString('en-US', { month: 'short' });
+    const year = date.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+ 

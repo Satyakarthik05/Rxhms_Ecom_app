@@ -1,4 +1,5 @@
 import { Platform, StyleSheet } from "react-native";
+import { Colors } from "../../constants/colors";
 
 export const styles = StyleSheet.create({
   container: {
@@ -52,7 +53,7 @@ export const styles = StyleSheet.create({
   input: {
     backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: Colors.BORDER_COLOR,
     borderRadius: 12,
     paddingVertical: 16,
     paddingHorizontal: 20,
@@ -100,13 +101,13 @@ export const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   radioSelected: {
-    borderColor: 'black',
+    borderColor: Colors.PRIMARY,
   },
   radioInner: {
     width: 12,
     height: 12,
     borderRadius: 6,
-    backgroundColor: 'black',
+    backgroundColor: Colors.PRIMARY,
   },
   genderText: {
     fontSize: 16,
@@ -158,7 +159,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 16,
   },
   signupButton: {
-    backgroundColor: 'black',
+    backgroundColor: Colors.PRIMARY,
     paddingVertical: 18,
     borderRadius: 12,
     alignItems: 'center',

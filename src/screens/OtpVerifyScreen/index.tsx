@@ -15,7 +15,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import { usePostByBody } from '../../customHooks/usePostByPath';
 import { LoginWithMobile } from '../../constants/constants';
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { getLocalData } from '../../utils/utils';
+import { getLocalData, setLocalData, setLocalText } from '../../utils/utils';
 import { LoginRequest } from '../../models/LoginRequest';
 
 
@@ -94,6 +94,10 @@ const OtpVerifyScreen: React.FC = () => {
     try {
       const response = await executePostByPath(LoginWithMobile, loginRequest);
       console.log('OTP verified response:', response);
+      const username = response?.username;
+      await setLocalText('username', username);
+       const token = response?.token;
+      await setLocalData('token', token);
      if (response?.isCustomerExist === false) {
       navigation.navigate('Signup', { phoneNumber }); // pass number if needed in Signup
     } else {

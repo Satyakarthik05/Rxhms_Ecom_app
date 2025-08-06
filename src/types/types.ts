@@ -14,4 +14,6 @@ export type RootStackParamList = {
   ResetPasswordScreen: {
   phoneNumber?: string;
 };
+Profile: undefined;
+AddMemberScreen: {customer?: any};
 };
