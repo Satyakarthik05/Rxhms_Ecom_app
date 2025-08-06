@@ -64,7 +64,7 @@ const LoginScreen: React.FC = () => {
 
       const response = await executePostByPath(LoginWithEmail, LoginWithEmailRequest);
       if(response){
-       navigation.navigate('OtpVerifyScreen' as never);
+       navigation.navigate('Home' as never);
       }
 
     } catch (error) {
@@ -86,7 +86,7 @@ const LoginScreen: React.FC = () => {
   };
 
   const handleForgotPassword = () => {
-    navigation.navigate('ForgotPasswordScreen');
+    navigation.navigate('ForgotPasswordScreen' as never);
     console.log('Forgot password pressed');
   };
 
