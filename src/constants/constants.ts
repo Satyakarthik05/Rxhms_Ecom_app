@@ -42,4 +42,7 @@ export const LoginWithMobile = 'security/auth/mob-login';
 export const RegisterUser = 'security/auth/create/customer';
 export const LoginWithEmail = 'security/auth/email-login';
 export const ValidateOtp = 'security/auth/validate-otp';
+export const GenerateOtpForForgotPwd = 'security/auth/otp-forgot-pwd';
+export const ValidateOtpForForgotPwd = 'security/auth/validate-otp';
+export const ResetPassword = 'security/auth/reset-pwd';
 

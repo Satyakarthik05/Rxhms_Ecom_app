@@ -63,7 +63,7 @@ const MobileLoginScreen: React.FC = () => {
     navigation.navigate('Login');
   };
   const handleSignup = () => {
-    navigation.navigate('Signup');
+    navigation.navigate('Signup', {phoneNumber});
     console.log('Sign up pressed');
   }
 

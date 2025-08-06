@@ -12,18 +12,37 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import Feather from 'react-native-vector-icons/Feather';
+import { getLocalData } from '../../utils/utils';
+import { ValidateOtpForForgotPwd } from '../../constants/constants';
+import { usePostByParams } from '../../customHooks/usePostByParams';
+
+import { useRoute, RouteProp } from '@react-navigation/native';
+
 
 type ForgotOtpScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'ForgotOtpScreen'
 >;
+type ForgotOtpScreenRouteProp = RouteProp<RootStackParamList, 'ForgotOtpScreen'>;
+
 
 const ForgotOtpScreen: React.FC = () => {
-  const navigation = useNavigation<ForgotOtpScreenNavigationProp>();
+const navigation = useNavigation<ForgotOtpScreenNavigationProp>();
   const [otp, setOtp] = useState(['', '', '', '']);
   const [timer, setTimer] = useState(20);
   const [canResend, setCanResend] = useState(false);
   const inputRefs = useRef<(TextInput | null)[]>([]);
+  const route = useRoute<ForgotOtpScreenRouteProp>();
+const { phoneNumber } = route.params;
+
+
+  const {
+  data: loginResponse,
+  loading: loadingLoginWithMobile,
+  error: errorLoginWithMobile,
+  executePost
+} = usePostByParams();
+
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -56,16 +75,38 @@ const ForgotOtpScreen: React.FC = () => {
     }
   };
 
-  const handleVerify = () => {
-    const otpString = otp.join('');
-    if (otpString.length === 4) {
-      console.log('OTP Verified:', otpString);
-      navigation.navigate('ResetPasswordScreen'); 
-      Alert.alert('Success', 'OTP Verified Successfully');
-    } else {
-      Alert.alert('Error', 'Please enter complete OTP');
-    }
-  };
+ const handleVerify = async () => {
+  const otpString = otp.join('');
+  if (otpString.length !== 4) {
+    Alert.alert('Error', 'Please enter a valid 4-digit OTP');
+    return;
+  }
+
+  const txnId = await getLocalData('txnId');
+  if (!txnId) {
+    Alert.alert('Error', 'Transaction ID is missing.');
+    return;
+  }
+
+  console.log('OTP Verified:', otpString);
+  console.log('Transaction ID:', txnId);
+
+  try {
+    const response = await executePost(ValidateOtpForForgotPwd, {
+      txnId: txnId,
+      otp: otpString,
+    });
+
+    console.log('ValidateOtpForForgotPwd', response);
+    Alert.alert('Success', 'OTP Verified Successfully');
+    navigation.navigate('ResetPasswordScreen', { phoneNumber });
+
+  } catch (error) {
+    console.error('OTP verification failed:', error);
+    Alert.alert('Error', 'OTP verification failed. Please try again.');
+  }
+};
+
 
   const handleResendCode = () => {
     if (canResend) {

@@ -6,19 +6,25 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
   SafeAreaView,
   StatusBar,
   Dimensions,
+  Alert,
 } from 'react-native';
+import { styles } from './styles';
 import { RootStackParamList } from '../../types/types';
 import Feather from 'react-native-vector-icons/Feather';
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { usePostByParams } from '../../customHooks/usePostByParams';
+import { ResetPassword } from '../../constants/constants';
+
 
 const { width } = Dimensions.get('window');
 type ResetPasswordScreenNavigationProp = NativeStackNavigationProp<
   RootStackParamList,
   'ResetPasswordScreen'
 >;
+type ResetPasswordScreenRouteProp = RouteProp<RootStackParamList, 'ResetPasswordScreen'>;
 
 const ResetPasswordScreen: React.FC = () => {
      const navigation = useNavigation<ResetPasswordScreenNavigationProp>()
@@ -26,10 +32,31 @@ const ResetPasswordScreen: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const route = useRoute<ResetPasswordScreenRouteProp>();
+const { phoneNumber } = route.params ?? {};
 
-  const handleResetPassword = () => {
-    // Handle reset password logic here
-    console.log('Reset password');
+  const {
+  data: loginResponse,
+  loading: loadingLoginWithMobile,
+  error: errorLoginWithMobile,
+  executePost
+} = usePostByParams();
+
+  const handleResetPassword =  async () => {
+   try {
+       const response = await executePost(ResetPassword, {
+       mobileNumber: phoneNumber,
+       password: newPassword
+       });
+   
+       console.log('ValidateOtpForForgotPwd', response);
+       Alert.alert('Success', 'OTP Verified Successfully');
+       navigation.navigate('Login');
+   
+     } catch (error) {
+       console.error('OTP verification failed:', error);
+       Alert.alert('Error', 'OTP verification failed. Please try again.');
+     }
   };
 
   const handleLogIn = () => {
@@ -139,135 +166,6 @@ const ResetPasswordScreen: React.FC = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ffffff',
-  },
-  header: {
-    paddingHorizontal: 20,
-    paddingTop: 15,
-    paddingBottom: 10,
-  },
-  backButton: {
-    width: 44,
-    height: 44,
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-    borderRadius: 22,
-  },
-  backButtonText: {
-    fontSize: 28,
-    color: '#000000',
-    fontWeight: '300',
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 30,
-    justifyContent: 'flex-start',
-  },
-  // Reset password header - better spacing
-  resetPasswordHeader: {
-    marginTop: 60,
-    marginBottom: 40,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#000000',
-    marginBottom: 8,
-    letterSpacing: -0.5,
-  },
-  subtitle: {
-    fontSize: 16,
-    color: '#666666',
-    lineHeight: 22,
-    fontWeight: '400',
-  },
-  // Input section - better spacing and alignment
-  inputSection: {
-    marginBottom: 40,
-  },
-  inputContainer: {
-    marginBottom: 24,
-  },
-  inputLabel: {
-    fontSize: 16,
-    color: '#000000',
-    marginBottom: 8,
-    fontWeight: '600',
-  },
-  passwordInputWrapper: {
-    position: 'relative',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  passwordInput: {
-    flex: 1,
-    height: 56,
-    borderWidth: 1.5,
-    borderColor: '#E8E8E8',
-    borderRadius: 8,
-    paddingHorizontal: 16,
-    paddingRight: 50,
-    fontSize: 16,
-    color: '#000000',
-    backgroundColor: '#ffffff',
-   
-  },
-  eyeButton: {
-    position: 'absolute',
-    right: 16,
-    width: 32,
-    height: 32,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 16,
-  },
-  eyeIcon: {
-    fontSize: 20,
-    color: '#666666',
-  },
-  buttonContainer: {
-    marginTop: 20,
-    marginBottom: 40,
-  },
-  resetPasswordButton: {
-    height: 56,
-    backgroundColor: '#000000',
-    borderRadius: 8,
-    justifyContent: 'center',
-    alignItems: 'center',
-   
-  },
-  resetPasswordButtonText: {
-    color: '#ffffff',
-    fontSize: 18,
-    fontWeight: '600',
-    letterSpacing: 0.5,
-  },
-  bottomSection: {
-    paddingHorizontal: 30,
-    paddingBottom: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  alreadyHaveAccountContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  alreadyHaveAccountText: {
-    fontSize: 16,
-    color: '#666666',
-    fontWeight: '400',
-  },
-  logInText: {
-    fontSize: 16,
-    color: '#000000',
-    fontWeight: '600',
-    textDecorationLine: 'underline',
-  },
-});
+
 
 export default ResetPasswordScreen;

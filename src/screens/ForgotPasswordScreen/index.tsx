@@ -12,6 +12,13 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import Feather from 'react-native-vector-icons/Feather';
+import { usePostByParams } from '../../customHooks/usePostByParams';
+
+import {styles as MobileLoginStyles} from '../MobileLoginScreen/styles'; // Import styles from MobileLoginScreen
+import { GenerateOtpForForgotPwd } from '../../constants/constants';
+import { setLocalData } from '../../utils/utils';
+
+
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
 
 
@@ -19,11 +26,48 @@ const ForgotPasswordScreen: React.FC = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+  
+    const [showCountryPicker, setShowCountryPicker] = useState(false);
+    const [countryCode, setCountryCode] = useState('+91');
+    const [flag, setFlag] = useState('🇮🇳');
+    const [callingCode, setCallingCode] = useState('91');
 
-  const handleSendCode = () => {
-    navigation.navigate('ForgotOtpScreen');
-    // Handle send code logic here
-    console.log('Send code to:', email);
+  const { data, loading, error: apiError, executePost } = usePostByParams();
+      const [error, setError] = useState<string | null>(null);
+
+  const handleSendCode = async () => {
+       if (!phoneNumber.trim()) {
+       setError("Mobile number is required");
+       return;
+     }
+ 
+     if (phoneNumber.length !== 10) {
+       setError("Please enter a valid 10-digit mobile number");
+       return;
+     }
+ 
+     const formattedNumber = `+${callingCode}-${phoneNumber}`;
+     console.log("Submitting mobile number:", formattedNumber);
+ 
+     try {
+    const response =   await executePost(GenerateOtpForForgotPwd, { mobileNumber: formattedNumber });
+       console.log("OTP generation response:", response);
+     console.log('Mobile forgot pressed', { phoneNumber, countryCode });
+    if(response){
+     const txnId =  response?.content
+      await setLocalData('txnId',txnId);
+      console.log('Transaction ID saved in forgot password:', txnId);
+    }
+       navigation.navigate('ForgotOtpScreen', {phoneNumber: formattedNumber})
+     
+     } catch (err) {
+       console.error("Login error:", err);
+       setError("Failed to send OTP. Please try again.");
+     }
+    // navigation.navigate('ForgotOtpScreen');
+    // // Handle send code logic here
+    // console.log('Send code to:', email);
   };
 
   const handleLogIn = () => {
@@ -61,17 +105,26 @@ const ForgotPasswordScreen: React.FC = () => {
 
         {/* Text Input Section */}
         <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>Email or phone Number</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Enter your email address"
-            placeholderTextColor="#999999"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoCorrect={false}
-          />
+          <Text style={styles.inputLabel}>Phone Number</Text>
+            <View style={MobileLoginStyles.phoneInputContainer}>
+                     <TouchableOpacity
+                       style={MobileLoginStyles.countryCode}
+                       onPress={() => setShowCountryPicker(true)}
+                     >
+                       <Text style={MobileLoginStyles.flagText}>{flag}</Text>
+                       <Text style={MobileLoginStyles.countryCodeText}>{countryCode}</Text>
+                     </TouchableOpacity>
+         
+                     <TextInput
+                       style={MobileLoginStyles.phoneInput}
+                       placeholder="Enter your phone number"
+                       value={phoneNumber}
+                       onChangeText={setPhoneNumber}
+                       keyboardType="phone-pad"
+                       maxLength={10}
+                       placeholderTextColor="#999"
+                     />
+                   </View>
         </View>
 
         {/* Send Code Button */}

@@ -1,14 +1,17 @@
-// Define the type for the navigation stack params (add more as needed)
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
-  Signup: {phoneNumber?: string}; // Optional phoneNumber for Signup
+  Signup: {
+    phoneNumber?: string
+  };
   OtpVerifyScreen: {
-    phoneNumber: string;
+    phoneNumber?: string;
   };
 
   MobileLogin: undefined
-  ForgotPasswordScreen: undefined;
-  ForgotOtpScreen: undefined;
-  ResetPasswordScreen: undefined;
+  ForgotPasswordScreen: {phoneNumber?: string}; 
+  ForgotOtpScreen: {phoneNumber?: string}; 
+  ResetPasswordScreen: {
+  phoneNumber?: string;
+};
 };
