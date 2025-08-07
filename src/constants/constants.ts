@@ -29,6 +29,8 @@ BaseAxios.interceptors.request.use(
       ...(token && { Authorization: `Bearer ${token}` }),
       ...(username && { username }),
     };
+        console.log("config from headers", config);
+
     return config;
   },
   (error) => Promise.reject(error)
@@ -119,3 +121,22 @@ export const ChangePassword = 'security/auth/change-pwd';
 export const GetCustomerDetails = 'customer/profile/get/my-details';
 export const CreateAddOnCustomer = 'customer/profile/create-addon-customer';
 export const GetAddonCustomers = (username: string) => `customer/profile/dependents/by-username/${username}`;
+
+
+export const getAuthHeaders = async () =>{
+const username = await getLocalText('username');
+    const token = await getLocalData('token');
+    console.log("token from headers", token);
+    const headers = {
+       "Content-Type": "Application/json",
+     client_id: "RXHMS_ECOM_APP",
+
+      ...(token && { Authorization: `Bearer ${token}` }),
+      ...(username && { username }),
+    };
+        console.log("headers from headers", headers);
+
+    return headers;
+}
+   
+  

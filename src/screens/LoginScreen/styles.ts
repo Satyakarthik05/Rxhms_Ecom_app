@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 import { Colors } from "../../constants/colors";
+import { scale, verticalScale, fontScale, spacing } from "../../utils/responsive";
+import Fonts from "../../constants/fonts";
 
 export const styles = StyleSheet.create({
   container: {
@@ -8,110 +10,111 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.xl,
     justifyContent: 'flex-start',
-    paddingTop: 60,
+    paddingTop: verticalScale(60),
   },
   title: {
-    fontSize: 28,
+    fontSize: fontScale(28),
     fontWeight: '600',
     color: Colors.PRIMARY,
-    marginBottom: 50,
+    marginBottom: verticalScale(50),
     textAlign: 'left',
   },
   formContainer: {
     flex: 1,
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
     position: 'relative',
   },
   label: {
-  fontSize: 15,
-  fontWeight: '600',
-  color: '#333',
-  marginBottom: 8,
-},
+    fontSize: fontScale(15),
+    fontWeight: '600',
+    color: '#333',
+    marginBottom: verticalScale(8),
+  },
   input: {
     backgroundColor: '#f5f5f5',
     borderWidth: 1,
+   
     borderColor: '#006F8580',
-    borderRadius: 8,
-    paddingVertical: 15,
-    paddingHorizontal: 16,
-    fontSize: 16,
+    borderRadius: scale(8),
+    paddingVertical: verticalScale(15),
+    paddingHorizontal: scale(16),
+    fontSize: fontScale(16),
+    ...Fonts.fontStyleRegular,
     color: '#333333',
   },
   passwordInput: {
-    paddingRight: 50,
+    paddingRight: scale(50),
   },
   eyeIcon: {
     position: 'absolute',
-    right: 15,
-    top: 35,
-    padding: 5,
+    right: scale(15),
+    top: verticalScale(35),
+    padding: scale(5),
   },
   eyeText: {
-    fontSize: 20,
-    color: '#666',
+    fontSize: fontScale(20),
+    color: Colors.BORDER_COLOR,
   },
   linksContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 40,
-    marginTop: 10,
+    marginBottom: verticalScale(40),
+    marginTop: verticalScale(10),
   },
   linkText: {
-    fontSize: 14,
+    fontSize: fontScale(14),
     color: Colors.PRIMARY,
   },
   forgotlinkText: {
-    fontSize: 14,
-    // color: Colors.RED,
-     color: '#FF4234'
+    fontSize: fontScale(14),
+    color: Colors.RED
   },
   loginButton: {
     backgroundColor: Colors.PRIMARY,
-    paddingVertical: 18,
-    borderRadius: 8,
+    paddingVertical: verticalScale(18),
+    borderRadius: scale(8),
     alignItems: 'center',
-    marginBottom: 25,
+    marginBottom: verticalScale(25),
   },
   loginButtonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontWeight: '600',
   },
   orText: {
     textAlign: 'center',
     color: '#666666',
-    fontSize: 14,
-    marginBottom: 25,
+    fontSize: fontScale(14),
+    marginBottom: verticalScale(25),
   },
   otpButton: {
     backgroundColor: Colors.PRIMARY,
-    paddingVertical: 18,
-    borderRadius: 8,
+    paddingVertical: verticalScale(18),
+    borderRadius: scale(8),
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: verticalScale(40),
   },
   otpButtonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontWeight: '600',
   },
   signUpContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingBottom: 40,
+    paddingBottom: verticalScale(40),
   },
   signUpText: {
-    fontSize: 14,
+    fontSize: fontScale(14),
     color: '#666666',
   },
   signUpLink: {
-    fontSize: 14,
+    fontSize: fontScale(14),
     color: Colors.PRIMARY,
     fontWeight: '600',
     textDecorationLine: 'underline',

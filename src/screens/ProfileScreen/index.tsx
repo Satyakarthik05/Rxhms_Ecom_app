@@ -11,13 +11,14 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import { styles } from './styles';
 import useApiCall from '../../customHooks/customhooks';
-import { BaseAxios, GetAddonCustomers, GetCustomerDetails, Logout } from '../../constants/constants';
+import { BaseAxios, GetAddonCustomers, getAuthHeaders, GetCustomerDetails, Logout } from '../../constants/constants';
 import { CustomerMaster } from '../../models/CustomerMaster';
 import { Colors } from '../../constants/colors';
 import { RootStackParamList } from '../../types/types';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 interface ProfileCardProps {
   name: string;
@@ -44,6 +45,13 @@ type AddMemberScreenNavigationProp = NativeStackNavigationProp<RootStackParamLis
 
 const ProfileScreen: React.FC = () => {
   const navigation = useNavigation<AddMemberScreenNavigationProp>();
+
+
+  const { data: datalogout, loading: loadingLogout, error: errorLogout } = useApiCall('POST', Logout)
+
+
+  console.log("@@@@logout before clicking", datalogout);
+
 
   /* Fetch Customer Details */
   const { data: customerDetails, loading, error } = useApiCall<CustomerDetailsResponse>(
@@ -93,103 +101,86 @@ const ProfileScreen: React.FC = () => {
   };
 
   const handleAddProfile = () => {
-    console.log('Add Profile pressed');
-  };
-
-  const handleBecomeMember = () => {
     navigation.navigate('AddMemberScreen', { customer });
     console.log('Become a member pressed');
   };
 
+
+
+
+
+  // const handleMenuPress = async (item: string) => {
+  //   if (item === 'Logout') {
+  //     try {
+  //       const response = await BaseAxios.post(Logout);
+  //       console.log("response from profile logout", response)
+  //       // Clear tokens or other session storage (optional)
+  //       if (response.status == 200) {
+  //         AsyncStorage.multiRemove(['token', 'username'])
+  //         // Redirect to login
+  //         navigation.reset({
+  //           index: 0,
+  //           routes: [{ name: 'Login' }], // Adjust the screen name
+  //         });
+  //       }
+
+  //     } catch (error) {
+  //       // Log and ignore token invalid errors during logout
+  //       console.warn("Logout failed or token invalid. Proceeding to clear session.", error);
+  //     }
+
+
+  //   } else {
+  //     console.log(`${item} pressed`);
+  //   }
+  // };
+
+
   const handleMenuPress = async (item: string) => {
+
+    if(item === 'Change Password') {
+      navigation.navigate('ChangePasswordScreen');
+    }
+     if(item === 'Address') {
+      navigation.navigate('AddAddress');
+    }
+ 
     if (item === 'Logout') {
       try {
-        const response = await BaseAxios.post(Logout);
-        console.log("response from profile logout", response)
-        // Clear tokens or other session storage (optional)
-        if (response.status == 200) {
+            console.log("@@@@ logout before response from profile",Logout);
+  let headers = await getAuthHeaders();
+        const response = await axios.post("http://13.204.131.57:9999/rxhms-api/security/auth/logout", null, { headers });             console.log("@@@@ logout response from profile", response)
+
+        if (response.status === 200) {
+
+          console.log("Logout successful");
+
+
           AsyncStorage.multiRemove(['token', 'username'])
-          // Redirect to login
+          // Optional: clear Redux store or any local storage here
+
+
+
           navigation.reset({
+
             index: 0,
-            routes: [{ name: 'Login' }], // Adjust the screen name
+
+            routes: [{ name: 'Login' }]
+
           });
+
+        } else {
+
+          console.warn("Logout failed", response.status);
+
         }
 
       } catch (error) {
-        // Log and ignore token invalid errors during logout
-        console.warn("Logout failed or token invalid. Proceeding to clear session.", error);
+        console.error("Error during logout:", error);
+
       }
-
-
-    } else {
-      console.log(`${item} pressed`);
     }
   };
-
-
-  // const handleLogout = async () => {
-
-
-  //     let result;
-  //     try {
-
-  //       const storedDeviceInfo = await getLocalData("deviceTokenInfo");
-  //       result = await deviceLogout(storedDeviceInfo);
-  //       await setLocalData("deviceTokenInfo", result.content);
-  //       // 1. Call your backend logout endpoint (optional – but good to keep server session clean)
-  //       const response = await BaseAxios.post(Logout);
-  //       //if (true) {
-  //       if (response.status === 200) {
-  //         console.log("Logout successful on server side");
-  //         dispatch(resetNotificationsState());
-
-  //         await AsyncStorage.multiRemove([
-  //           "jwt_token",
-  //           "username",
-  //           "user_profile",
-  //           "cart_items",
-  //           // DO NOT remove 'LOCAL_NOTIFICATIONS' - this should persist
-  //         ])
-  //         dispatch(clearAuthState());
-  //         dispatch(clearProfile());
-
-  //         navigation.dispatch(
-  //           CommonActions.reset({
-  //             index: 0,
-  //             routes: [{ name: 'LoginScreen' }],
-  //           })
-  //         );
-  //         await setLocalData("deviceTokenInfo", result.content);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error during logout API call:", error);
-  //       // Even if the API call fails, we still want to clear local data.
-  //     }
-  //     /* finally {
-  //       // 2. Wipe out everything in AsyncStorage
-  //       await clearSessionData(); 
-  //       // (Assuming `clearSessionData()` does AsyncStorage.clear())
-
-  //       // 3. Reset any Redux slices that hold user info
-  //       dispatch(clearAuthState()); 
-  //       dispatch(clearProfile()); // if you store profile data separately
-
-
-
-  //       // 4. Finally, reset the navigation state so that LoginScreen is the only route
-  //       navigation.dispatch(
-  //         CommonActions.reset({
-  //           index: 0,
-  //           routes: [{ name: 'LoginScreen' }],
-  //         })
-  //       );
-
-  //       console.log("eswar::::  "+result);
-
-  //         console.log("yash");
-  //     }*/
-  //   };
 
 
 
@@ -264,12 +255,7 @@ const ProfileScreen: React.FC = () => {
             )}
 
             {/* Become a Member Button */}
-            <TouchableOpacity
-              style={styles.becomeMemberButton}
-              onPress={handleBecomeMember}
-            >
-              <Text style={styles.becomeMemberText}>Become a member</Text>
-            </TouchableOpacity>
+
           </View>
         )}
 

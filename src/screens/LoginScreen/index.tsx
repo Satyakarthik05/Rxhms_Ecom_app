@@ -13,6 +13,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../types/types';
 import { usePostByBody } from '../../customHooks/usePostByPath';
 import { LoginWithEmail } from '../../constants/constants';
+import { Colors } from '../../constants/colors';
 
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -32,10 +33,6 @@ const LoginScreen: React.FC = () => {
 
 
 
-  // const handleLogin = async () => {
-  //   navigation.navigate('OtpVerifyScreen');
-  //   console.log('Login pressed', { email, password });
-  // };
 
 
   const handleLogin = async () => {
@@ -130,7 +127,7 @@ const LoginScreen: React.FC = () => {
               style={styles.eyeIcon}
               onPress={() => setShowPassword(!showPassword)}
             >
-              <Feather name={showPassword ? 'eye' : 'eye-off'} size={22} color="#666" />
+              <Feather name={showPassword ? 'eye' : 'eye-off'} size={22} color={Colors.BORDER_COLOR} />
             </TouchableOpacity>
           </View>
 

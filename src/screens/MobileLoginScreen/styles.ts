@@ -1,4 +1,7 @@
 import { StyleSheet } from "react-native";
+import { scale, verticalScale, fontScale, spacing } from "../../utils/responsive";
+import { Colors } from "../../constants/colors";
+import Fonts from "../../constants/fonts";
 
 export const styles = StyleSheet.create({
   container: {
@@ -7,84 +10,90 @@ export const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: 24,
+    paddingHorizontal: spacing.xl,
     justifyContent: 'flex-start',
-    paddingTop: 60,
+    paddingTop: verticalScale(60),
   },
   title: {
-    fontSize: 28,
+    fontSize: fontScale(28),
+     ...Fonts.fontStyleMedium,
     fontWeight: '600',
     color: '#000000',
-    marginBottom: 50,
+    marginBottom: verticalScale(50),
     textAlign: 'left',
   },
   mobileLoginContainer: {
     width: '100%',
-    marginBottom: 32,
+    marginBottom: verticalScale(32),
   },
   phoneLabel: {
-    fontSize: 14,
-    color: '#666666',
-    marginBottom: 8,
+    fontSize: fontScale(14),
+    color: 'black',
+    marginBottom: verticalScale(8),
+     ...Fonts.fontStyleMedium
   },
   phoneInputContainer: {
     flexDirection: 'row',
-    backgroundColor: '#f5f5f5',
+    backgroundColor: 'white',
     borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
+    borderColor: Colors.BORDER_COLOR,
+    borderRadius: scale(8),
     alignItems: 'center',
     overflow: 'hidden',
   },
   countryCode: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 15,
+    paddingHorizontal: scale(12),
+    paddingVertical: verticalScale(15),
     backgroundColor: '#ffffff',
     borderRightWidth: 1,
     borderRightColor: '#e0e0e0',
   },
   flagText: {
-    fontSize: 16,
-    marginRight: 8,
+    fontSize: fontScale(16),
+    marginRight: scale(8),
   },
   countryCodeText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: '#000000',
     fontWeight: '500',
   },
   phoneInput: {
     flex: 1,
-    paddingVertical: 15,
-    paddingHorizontal: 16,
-    fontSize: 16,
+    paddingVertical: verticalScale(15),
+    paddingHorizontal: scale(16),
+    fontSize: fontScale(16),
     color: '#000000',
   },
   linksContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
+    marginTop: verticalScale(10),
   },
   linkText: {
-    fontSize: 14,
-    color: '#666666',
+    fontSize: fontScale(14),
+    color: Colors.MENU_COLOR,
+  },
+  forgotLinkText: {
+    fontSize: fontScale(14),
+    color: Colors.RED,
   },
   loginButton: {
-    backgroundColor: '#000000',
-    paddingVertical: 18,
-    borderRadius: 8,
+    backgroundColor: Colors.PRIMARY,
+    paddingVertical: verticalScale(18),
+    borderRadius: scale(8),
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: verticalScale(180),
   },
   loginButtonText: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontWeight: '600',
   },
   signUpContainer: {
     position: 'absolute',
-    bottom: 40,
+    bottom: verticalScale(40),
     left: 0,
     right: 0,
     flexDirection: 'row',
@@ -92,13 +101,15 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signUpText: {
-    fontSize: 14,
+    fontSize: fontScale(14),
+    ...Fonts.fontStyleRegular,
     color: '#666666',
   },
   signUpLink: {
-    fontSize: 14,
-    color: '#000000',
+    fontSize: fontScale(14),
+    color: Colors.MENU_COLOR,
     fontWeight: '600',
-    textDecorationLine: 'underline',
+    ...Fonts.fontStyleSemiBold
+    
   },
 });

@@ -56,6 +56,10 @@ const MobileLoginScreen: React.FC = () => {
       setError("Failed to send OTP. Please try again.");
     }
   };
+
+  const handleforgot = () => {
+    navigation.navigate('ForgotPasswordScreen', {phoneNumber})
+  }
    
   
 
@@ -92,12 +96,16 @@ const MobileLoginScreen: React.FC = () => {
               keyboardType="phone-pad"
               maxLength={10}
               placeholderTextColor="#999"
+              
             />
           </View>
 
           <View style={styles.linksContainer}>
             <TouchableOpacity onPress={handleLoginWithEmail}>
               <Text style={styles.linkText}>Login with Email</Text>
+            </TouchableOpacity>
+             <TouchableOpacity onPress={handleforgot}>
+              <Text style={styles.forgotLinkText}>Forgot password?</Text>
             </TouchableOpacity>
           </View>
         </View>
