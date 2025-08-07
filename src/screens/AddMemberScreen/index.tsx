@@ -92,6 +92,11 @@ const AddFamilyMember: React.FC = () => {
     // Handle cancel action
     console.log('Cancel pressed');
   };
+
+
+  const handleBackIcon = () => {
+    navigation.navigate('Profile');
+  }
  
   const handleSave = async () => {
   try {
@@ -159,6 +164,7 @@ const AddFamilyMember: React.FC = () => {
       relationship: formData.relation.trim(),
       customer: customerMaster,
     };
+
 
     console.log('Submitting Addon Request:', addonRequest);
 
@@ -230,9 +236,9 @@ const AddFamilyMember: React.FC = () => {
 
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
-          <Text style={styles.backArrow}>←</Text>
-        </TouchableOpacity>
+        <TouchableOpacity style={styles.backButton} onPress={handleBackIcon}>
+                   <Feather name="arrow-left" size={24} color="#000" />
+                 </TouchableOpacity>
         <Text style={styles.headerTitle}>Add Family Member</Text>
       </View>
 

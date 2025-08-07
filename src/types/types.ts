@@ -16,4 +16,6 @@ export type RootStackParamList = {
 };
 Profile: undefined;
 AddMemberScreen: {customer?: any};
+ChangePasswordScreen: undefined;
+
 };

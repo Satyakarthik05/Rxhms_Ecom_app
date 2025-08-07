@@ -12,6 +12,7 @@ import ForgotOtpScreen from '../screens/ForgotOtpScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AddFamilyMember from '../screens/AddMemberScreen';
+import ChangePasswordScreen from '../screens/ChangePasswordScreen';
 
 
 
@@ -66,7 +67,12 @@ const StackNavigator = () => {
        <Stack.Screen 
         name="ResetPasswordScreen" 
         component={ResetPasswordScreen}
-        options={{ title: 'Forgot Otp' }}
+        options={{ title: 'Reset Password' }}
+      />
+        <Stack.Screen 
+        name="ChangePasswordScreen" 
+        component={ChangePasswordScreen}
+        options={{ title: 'Change Password' }}
       />
          <Stack.Screen 
         name="Profile" 

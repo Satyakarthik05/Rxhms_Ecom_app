@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Colors } from "../../constants/colors";
 
 export const styles = StyleSheet.create({
   container: {
@@ -35,7 +36,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: '700',
-    color: '#000000',
+    color: Colors.PRIMARY,
     marginBottom: 8,
     letterSpacing: -0.5,
   },
@@ -67,7 +68,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     height: 56,
     borderWidth: 1.5,
-    borderColor: '#E8E8E8',
+    borderColor: Colors.BORDER_COLOR,
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingRight: 50,
@@ -95,7 +96,7 @@ export const styles = StyleSheet.create({
   },
   resetPasswordButton: {
     height: 56,
-    backgroundColor: '#000000',
+    backgroundColor: Colors.PRIMARY,
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',

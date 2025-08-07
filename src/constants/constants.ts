@@ -23,6 +23,7 @@ BaseAxios.interceptors.request.use(
 
     const username = await getLocalText('username');
     const token = await getLocalData('token');
+    console.log("token from headers", token);
     config.headers = {
       ...config.headers,
       ...(token && { Authorization: `Bearer ${token}` }),
