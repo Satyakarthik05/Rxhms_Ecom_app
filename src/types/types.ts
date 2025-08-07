@@ -15,7 +15,9 @@ export type RootStackParamList = {
   phoneNumber?: string;
 };
 Profile: undefined;
+AddAddress: undefined;
 AddMemberScreen: {customer?: any};
+ProfileAddress: undefined;
 ChangePasswordScreen: undefined;
 
 };

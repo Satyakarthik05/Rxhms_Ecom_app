@@ -4,3 +4,8 @@ export enum GenderType {
     FEMALE = "FEMALE",
     OTHER = "OTHER",
 }
+
+export enum AddressType {
+    SHIPPING = "SHIPPING",
+     BILLING = "BILLING"
+}

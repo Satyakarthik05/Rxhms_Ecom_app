@@ -119,8 +119,13 @@ export const ChangePassword = 'security/auth/change-pwd';
 
 // Customer related endpoints
 export const GetCustomerDetails = 'customer/profile/get/my-details';
-export const CreateAddOnCustomer = 'customer/profile/create-addon-customer';
+export const CreateAddOnCustomer = 'customer/profile/create/addon-customer';
+export const UpdateAddOnCustomer = 'customer/profile/update/addon-customer';
+export const DeleteAddOnCustomer = 'customer/profile/delete/addon-customer';
 export const GetAddonCustomers = (username: string) => `customer/profile/dependents/by-username/${username}`;
+ 
+/*  Customer Address End Points  */
+export const AddAddress = 'customer/profile/create/address';
 
 
 export const getAuthHeaders = async () =>{

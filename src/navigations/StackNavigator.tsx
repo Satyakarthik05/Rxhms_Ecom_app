@@ -13,6 +13,8 @@ import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import AddFamilyMember from '../screens/AddMemberScreen';
 import ChangePasswordScreen from '../screens/ChangePasswordScreen';
+import AddAddressScreen from '../screens/AddAddressScreen';
+import ProfileAddressScreen from '../screens/ProfileAddressScreen';
 
 
 
@@ -78,6 +80,17 @@ const StackNavigator = () => {
         name="Profile" 
         component={ProfileScreen}
         options={{ title: 'Profile' }}
+      />
+
+       <Stack.Screen 
+        name="ProfileAddress" 
+        component={ProfileAddressScreen}
+        options={{ title: 'Address' }}
+      />
+        <Stack.Screen 
+        name="AddAddress" 
+        component={AddAddressScreen}
+        options={{ title: 'Add Address' }}
       />
 
       <Stack.Screen 

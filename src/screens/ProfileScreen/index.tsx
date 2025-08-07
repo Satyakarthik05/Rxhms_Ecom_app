@@ -11,7 +11,7 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import { styles } from './styles';
 import useApiCall from '../../customHooks/customhooks';
-import { BaseAxios, GetAddonCustomers, getAuthHeaders, GetCustomerDetails, Logout } from '../../constants/constants';
+import { GetAddonCustomers, getAuthHeaders, GetCustomerDetails, Logout } from '../../constants/constants';
 import { CustomerMaster } from '../../models/CustomerMaster';
 import { Colors } from '../../constants/colors';
 import { RootStackParamList } from '../../types/types';
@@ -19,6 +19,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import { AddOnCustomer } from '../../models/AddOnCustomer';
 
 interface ProfileCardProps {
   name: string;
@@ -38,7 +39,7 @@ interface CustomerDetailsResponse {
 }
 
 interface AddonCustomersResponse {
-  content?: CustomerMaster[];
+  content?: AddOnCustomer[];
 }
 
 type AddMemberScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddMemberScreen'>;
@@ -142,7 +143,7 @@ const ProfileScreen: React.FC = () => {
       navigation.navigate('ChangePasswordScreen');
     }
      if(item === 'Address') {
-      navigation.navigate('AddAddress');
+      navigation.navigate('ProfileAddress');
     }
  
     if (item === 'Logout') {
@@ -246,7 +247,7 @@ const ProfileScreen: React.FC = () => {
                         <Feather name="user" size={20} color="#666" />
                       </View>
                       <Text style={styles.additionalProfileName}>
-                        {`${addonCustomer.firstName?.trim().slice(0, 4) || 'User'}...`}
+                        {`${addonCustomer.customer.firstName?.trim().slice(0, 4) || 'User'}...`}
                       </Text>
                     </TouchableOpacity>
                   ))}

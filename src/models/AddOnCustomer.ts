@@ -1,12 +1,15 @@
+import { CustomerMaster } from "./CustomerMaster";
+
 export interface AddOnCustomer {
 
 
-    id: string,
+    id: string | null,
     primaryId: string,
-    addonId: string,
+    customer: CustomerMaster,
     relationship: string,
-    addedOn: string
+    addedOn: string | null
 
 
 
 }
+

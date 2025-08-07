@@ -17,7 +17,6 @@ import { styles as MobileLoginStyles } from '../MobileLoginScreen/styles'
 import { styles as RegisterStyles } from '../RegisterScreen/styles';
 import { styles } from './styles';
 import { usePostByBody } from '../../customHooks/usePostByPath';
-import { AddonRequest } from '../../models/AddonRequest';
 import { CreateAddOnCustomer } from '../../constants/constants';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { RootStackParamList } from '../../types/types';
@@ -25,6 +24,7 @@ import { CustomerMaster } from '../../models/CustomerMaster';
 import { GenderType } from '../../models/enums';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AddOnCustomer } from '../../models/AddOnCustomer';
 
 
 
@@ -159,10 +159,13 @@ const AddFamilyMember: React.FC = () => {
       parentId: null, // Set parent ID to primary customer
     };
 
-    const addonRequest: AddonRequest = {
-      primaryCustomerId: customer.id,
+    const addonRequest: AddOnCustomer = {
+      id: null,
+      primaryId: customer.id,
       relationship: formData.relation.trim(),
       customer: customerMaster,
+      addedOn: null
+
     };
 
 
