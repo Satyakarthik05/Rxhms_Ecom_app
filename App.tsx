@@ -1,15 +1,14 @@
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import StackNavigator from './src/navigations/StackNavigator'
+import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+// import StackNavigator from './src/navigations/StackNavigator',
+import StackNavigator from './src/nric_modules/navigations/StackNavigator';
 
 const App = () => {
   return (
-  <NavigationContainer>
-    <StackNavigator/>
-  </NavigationContainer>
+    <NavigationContainer>
+      <StackNavigator />
+    </NavigationContainer>
+  );
+};
 
-)
-}
-
-export default App
-
+export default App;
