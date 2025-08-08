@@ -18,6 +18,7 @@
     "@react-navigation/native-stack": "^7.3.24",
     "@reduxjs/toolkit": "^2.8.2",
     "axios": "^1.11.0",
+    "lucide-react-native": "^0.539.0",
     "react": "19.1.0",
     "react-native": "^0.80.2",
     "react-native-bootsplash": "^6.3.10",
@@ -28,6 +29,7 @@
     "react-native-modal-datetime-picker": "^18.0.0",
     "react-native-safe-area-context": "^5.5.2",
     "react-native-screens": "^4.13.1",
+    "react-native-svg": "^15.12.1",
     "react-native-vector-icons": "^10.3.0",
     "react-redux": "^9.2.0"
   },
