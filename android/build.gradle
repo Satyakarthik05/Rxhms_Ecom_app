@@ -12,10 +12,23 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:8.3.2") // ✅ Add version
-        classpath("com.facebook.react:react-native-gradle-plugin") // ✅ This doesn't need a version; React handles it
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20") // ✅ Match kotlinVersion
+        classpath("com.android.tools.build:gradle:8.3.2") 
+        classpath("com.facebook.react:react-native-gradle-plugin") 
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.1.20") 
     }
 }
 
 apply plugin: "com.facebook.react.rootproject"
+
+// ✅ Force old Play Services Location version to fix FusedLocationProviderClient crash
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    configurations.all {
+        resolutionStrategy {
+            force "com.google.android.gms:play-services-location:20.0.0"
+        }
+    }
+}

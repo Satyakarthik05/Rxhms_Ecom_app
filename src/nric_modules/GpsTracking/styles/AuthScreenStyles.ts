@@ -1,0 +1,110 @@
+import { StyleSheet } from 'react-native';
+
+export default StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#e6f0ff', // lighter, calming background
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+  },
+  card: {
+    width: '100%',
+    maxWidth: 400,
+    backgroundColor: '#ffffff',
+    borderRadius: 16,
+    paddingVertical: 32,
+    paddingHorizontal: 28,
+    // Softer shadow for modern look
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 6,
+  },
+  title: {
+    fontSize: 26,
+    fontWeight: '800',
+    marginBottom: 28,
+    textAlign: 'center',
+    color: '#004aad', // deep blue for contrast
+  },
+  formGroup: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 15,
+    marginBottom: 8,
+    color: '#3a3a3a',
+    fontWeight: '600',
+  },
+  input: {
+    height: 48,
+    borderWidth: 1,
+    borderColor: '#aac4ff',
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    backgroundColor: '#f9fbff',
+    fontSize: 16,
+    color: '#222',
+    shadowColor: '#b0c4ff',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3,
+  },
+  alertError: {
+    backgroundColor: '#ffd6d6',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#ff4d4d',
+  },
+  alertSuccess: {
+    backgroundColor: '#d6ffd6',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#4dff4d',
+  },
+  alertText: {
+    color: '#333',
+    fontSize: 15,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  button: {
+    backgroundColor: '#004aad',
+    paddingVertical: 14,
+    borderRadius: 14,
+    alignItems: 'center',
+    marginTop: 12,
+    shadowColor: '#004aad',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 22,
+  },
+  footerText: {
+    fontSize: 15,
+    color: '#555',
+  },
+  switchMode: {
+    fontSize: 15,
+    color: '#004aad',
+    marginLeft: 6,
+    fontWeight: '700',
+  },
+});

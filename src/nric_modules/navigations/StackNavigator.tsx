@@ -1,122 +1,80 @@
-import React, {useState} from 'react';
-import {StyleSheet} from 'react-native';
-import {SafeAreaView, StatusBar} from 'react-native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {UserProfile, DietPlan} from '../HealthTools/types/diet';
-import {DietAIService} from '../HealthTools/services/dietAI';
-import HealthHomeScreen from '../HealthTools/screens/HomeScreen';
-import UserProfileForm from '../HealthTools/components/UserProfileForm';
-import DietPlanDisplay from '../HealthTools/components/DietPlanDisplay';
-import LoadingScreen from '../HealthTools/components/LoadingScreen';
-import BMICalculator from '../HealthTools/components/BMICalculator';
-import BreatheChallenge from '../HealthTools/components/BreatheChallenge';
-import MedicineReminderScreen from '../HealthTools/screens/MedicineReminderScreen';
-import WaterReminderScreen from '../HealthTools/screens/WaterReminderScreen';
-import {RootStackParamList} from '../../../types/types';
-import index from '../chatbot/index';
-import WelcomeScreen from '../WelcomeScreen';
-import CallSetupScreen from '../VoipCalling/components/CallSetupScreen';
-import LoginScreen from '../VoipCalling/screens/LoginScreen';
-import RegisterScreen from '../VoipCalling/screens/RegisterScreen';
-import HomeScreen from '../VoipCalling/screens/HomeScreen';
-import VideoCallScreen from '../VoipCalling/components/VideoCallScreen';
+import React, { useState, useEffect } from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import LoginRegisterScreen from "../GpsTracking/screens/LoginRegisterScreen";
+import CustomerHomeScreen from "../GpsTracking/screens/CustomerHomeScreen";
+import ShopDetailScreen from "../GpsTracking/screens/ShopDetailScreen";
+import { Customer, Shop } from "../GpsTracking/types";
+
+export type RootStackParamList = {
+  Login: undefined;
+  CustomerHome: undefined;
+  ShopDetail: { shop: Shop };
+};
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const StackNavigator = () => {
-  const [dietPlan, setDietPlan] = useState<DietPlan | null>(null);
+  const [customer, setCustomer] = useState<Customer | null>(null);
+  const [detailShop, setDetailShop] = useState<Shop | null>(null);
 
-  const handleProfileSubmit = async (profile: UserProfile) => {
-    try {
-      const plan = await DietAIService.generateDietPlan(profile);
-      setDietPlan(plan);
-      return plan;
-    } catch (error) {
-      console.error('Error generating diet plan:', error);
-      throw error;
-    }
+  useEffect(() => {
+    const loadCustomer = async () => {
+      try {
+        const stored = await AsyncStorage.getItem("customer");
+        if (stored) {
+          setCustomer(JSON.parse(stored));
+        }
+      } catch (err) {
+        console.error("Error loading stored customer:", err);
+      }
+    };
+    loadCustomer();
+  }, []);
+
+  const handleLogin = async (cust: Customer) => {
+    setCustomer(cust);
+    await AsyncStorage.setItem("customer", JSON.stringify(cust));
+  };
+
+  const handleLogout = async () => {
+    await AsyncStorage.removeItem("customer");
+    setCustomer(null);
+    setDetailShop(null);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Stack.Navigator initialRouteName="Welcome">
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      {!customer ? (
         <Stack.Screen
-          name="Welcome"
-          component={WelcomeScreen}
-          options={{headerShown: false}}
+          name="Login"
+          children={() => <LoginRegisterScreen onLogin={handleLogin} />}
         />
+      ) : detailShop ? (
         <Stack.Screen
-          name="PatientLogin"
-          component={LoginScreen}
-          options={{headerShown: false}}
+          name="ShopDetail"
+          children={() => (
+            <ShopDetailScreen
+              shop={detailShop}
+              customer={customer}
+              onBack={() => setDetailShop(null)}
+            />
+          )}
         />
+      ) : (
         <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{headerShown: false}}
+          name="CustomerHome"
+          children={() => (
+            <CustomerHomeScreen
+              customer={customer}
+              onLogout={handleLogout}
+              onDetail={(shop) => setDetailShop(shop)}
+            />
+          )}
         />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="CallSetup"
-          component={CallSetupScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="VideoCallScreen"
-          component={VideoCallScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="HealthHome"
-          component={HealthHomeScreen}
-          options={{title: 'AI Diet Planner'}}
-        />
-        <Stack.Screen name="ProfileForm" options={{title: 'Create Profile'}}>
-          {() => <UserProfileForm onSubmit={handleProfileSubmit} />}
-        </Stack.Screen>
-        <Stack.Screen
-          name="Loading"
-          component={LoadingScreen}
-          options={{headerShown: false}}
-        />
-        <Stack.Screen
-          name="DietPlan"
-          component={DietPlanDisplay}
-          options={{title: 'Your Diet Plan'}}
-        />
-        <Stack.Screen
-          name="BMICalculator"
-          component={BMICalculator}
-          options={{title: 'BMI Calculator'}}
-        />
-        <Stack.Screen
-          name="BreatheChallenge"
-          component={BreatheChallenge}
-          options={{title: 'Breathe Challenge'}}
-        />
-        <Stack.Screen
-          name="WaterReminderScreen"
-          component={WaterReminderScreen}
-          options={{title: 'WaterRemainder'}}
-        />
-        <Stack.Screen
-          name="MedicineReminderScreen"
-          component={MedicineReminderScreen}
-          options={{title: 'MedicineRemainder'}}
-        />
-      </Stack.Navigator>
-    </SafeAreaView>
+      )}
+    </Stack.Navigator>
   );
 };
 
 export default StackNavigator;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
