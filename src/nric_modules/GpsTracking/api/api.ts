@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'http://192.168.1.3:8080/api', // Android emulator friendly
+  baseURL: 'http://192.168.1.2:8080/api', // Android emulator friendly
 });
 
 API.interceptors.response.use(

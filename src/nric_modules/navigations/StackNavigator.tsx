@@ -1,3 +1,4 @@
+// src/nric_modules/navigations/StackNavigator.tsx
 import React, { useState, useEffect } from "react";
 import { SafeAreaView, StyleSheet } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -103,9 +104,7 @@ const StackNavigator = () => {
       <Stack.Navigator initialRouteName="Welcome" screenOptions={{ headerShown: false }}>
         {/* Welcome Screen */}
         <Stack.Screen name="Welcome">
-          {({ navigation }) => (
-            <WelcomeScreen navigation={navigation} />
-          )}
+          {({ navigation }) => <WelcomeScreen navigation={navigation} />}
         </Stack.Screen>
 
         {/* Chatbot entry */}
@@ -130,32 +129,49 @@ const StackNavigator = () => {
         <Stack.Screen name="WaterReminderScreen" component={WaterReminderScreen} />
         <Stack.Screen name="MedicineReminderScreen" component={MedicineReminderScreen} />
 
-        {/* GPS Tracking */}
-        {!customer ? (
-          <Stack.Screen name="GPSLogin">
-            {() => <LoginRegisterScreen onLogin={handleLogin} />}
-          </Stack.Screen>
-        ) : detailShop ? (
-          <Stack.Screen name="ShopDetail">
-            {() => (
+        {/* GPS Tracking — always registered */}
+        <Stack.Screen name="GPSLogin">
+          {({ navigation }) =>
+            customer ? (
+              // If logged in, go to customer home directly
+              <CustomerHomeScreen
+                customer={customer}
+                onLogout={handleLogout}
+                onDetail={(shop) => {
+                  setDetailShop(shop);
+                  navigation.navigate("ShopDetail", { shop });
+                }}
+              />
+            ) : (
+              <LoginRegisterScreen onLogin={handleLogin} />
+            )
+          }
+        </Stack.Screen>
+
+        <Stack.Screen name="CustomerHome">
+          {({ navigation }) => (
+            <CustomerHomeScreen
+              customer={customer}
+              onLogout={handleLogout}
+              onDetail={(shop) => {
+                setDetailShop(shop);
+                navigation.navigate("ShopDetail", { shop });
+              }}
+            />
+          )}
+        </Stack.Screen>
+
+        <Stack.Screen name="ShopDetail">
+          {() =>
+            detailShop && customer ? (
               <ShopDetailScreen
                 shop={detailShop}
                 customer={customer}
                 onBack={() => setDetailShop(null)}
               />
-            )}
-          </Stack.Screen>
-        ) : (
-          <Stack.Screen name="CustomerHome">
-            {() => (
-              <CustomerHomeScreen
-                customer={customer}
-                onLogout={handleLogout}
-                onDetail={(shop) => setDetailShop(shop)}
-              />
-            )}
-          </Stack.Screen>
-        )}
+            ) : null
+          }
+        </Stack.Screen>
       </Stack.Navigator>
     </SafeAreaView>
   );
